@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Class Timetable</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #fff8f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #821D30;
+    }
+    form {
+      max-width: 700px;
+      margin: 0 auto 30px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    form input, form select, form button {
+      padding: 10px;
+      margin: 10px 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      width: calc(100% / 2.2);
+    }
+    form button {
+      background-color: #FB6090;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    form button:hover {
+      background-color: #821D30;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      min-width: 120px;
+    }
+    th {
+      background-color: #FB6090;
+      color: white;
+    }
+    td.highlight {
+      background-color: #ffe3ec;
+      animation: fadeIn 0.6s ease-in;
+    }
+    @keyframes fadeIn {
+      from { background-color: #fff0f5; opacity: 0; }
+      to { background-color: #ffe3ec; opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Class Timetable</h1>
+
+  <form id="timetable-form">
+    <input type="text" id="subject" placeholder="Subject" required />
+    <input type="text" id="teacher" placeholder="Teacher" required />
+    <select id="day" required>
+      <option value="">Select Day</option>
+      <option value="Monday">Monday</option>
+      <option value="Tuesday">Tuesday</option>
+      <option value="Wednesday">Wednesday</option>
+      <option value="Thursday">Thursday</option>
+      <option value="Friday">Friday</option>
+      <option value="Saturday">Saturday</option>
+    </select>
+    <select id="time" required>
+      <option value="">Select Time</option>
+      <option value="8:00 AM">8:00 AM</option>
+      <option value="9:00 AM">9:00 AM</option>
+      <option value="10:00 AM">10:00 AM</option>
+      <option value="11:00 AM">11:00 AM</option>
+      <option value="12:00 PM">12:00 PM</option>
+      <option value="1:00 PM">1:00 PM</option>
+    </select>
+    <button type="submit">Add Class</button>
+  </form>
+
+  <table id="timetable">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+        <th>Saturday</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Time slots will go here -->
+      <tr><th>8:00 AM</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><th>9:00 AM</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><th>10:00 AM</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><th>11:00 AM</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><th>12:00 PM</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><th>1:00 PM</th><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    const form = document.getElementById('timetable-form');
+    const timetable = document.getElementById('timetable');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const subject = document.getElementById('subject').value.trim();
+      const teacher = document.getElementById('teacher').value.trim();
+      const day = document.getElementById('day').value;
+      const time = document.getElementById('time').value;
+
+      if (!subject || !teacher || !day || !time) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const dayIndex = {
+        'Monday': 1,
+        'Tuesday': 2,
+        'Wednesday': 3,
+        'Thursday': 4,
+        'Friday': 5,
+        'Saturday': 6
+      }[day];
+
+      const rows = timetable.querySelectorAll("tbody tr");
+      for (let row of rows) {
+        if (row.querySelector("th").innerText === time) {
+          const cell = row.children[dayIndex];
+          cell.innerHTML = `<strong>${subject}</strong><br><small>${teacher}</small>`;
+          cell.classList.add("highlight");
+          setTimeout(() => cell.classList.remove("highlight"), 2000);
+          break;
+        }
+      }
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>
